@@ -7,6 +7,7 @@ import fsx.glob
 
 
 class FsxFakeFsTree(FsTree):
+    ''' A virtual file system tree supporting some common file system functions. '''
     def __init__(self, monkeypatch, flip_backslashes=None):
         FsTree.__init__(self, flip_backslashes=flip_backslashes)
 
