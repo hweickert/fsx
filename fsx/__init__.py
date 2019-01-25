@@ -18,6 +18,10 @@ def listdir(path):
     res = os.listdir(path)
     return res
 
+def makedirs(path):
+    res = os.makedirs(path)
+    return res
+
 def open(filename, mode='r', encoding=None):
     res = codecs.open(filename, mode, encoding=encoding)
     return res

@@ -79,6 +79,26 @@ def test_listdir_raises_ioerror_if_dir_doesnt_exist(files, path, fsx_fake):
         fsx.listdir(path)
 
 
+@pytest.mark.parametrize('path, exp', [
+    ('/temp/foo', {'': {'temp': {'foo': {}}}}),
+])
+def test_makedirs_creates_dir(path, exp, fsx_fake):
+    fsx.makedirs(path)
+    assert fsx_fake.as_dict() == exp
+
+def test_makedirs_raises_error_if_dir_already_exists(fsx_fake):
+    path = '/temp/foo'
+    fsx.makedirs(path)
+
+    # TODO: split into 2 tests executable on all OSes
+    if sys.platform == 'win32':
+        with pytest.raises(WindowsError):
+            fsx.makedirs(path)
+    else:
+        with pytest.raises(IOError):
+            fsx.makedirs(path)
+
+
 # --- open ---
 def test_open_read_works_on_fake_files_which_received_content(fsx_fake):
     fsx_fake.add_file('f', content='test')

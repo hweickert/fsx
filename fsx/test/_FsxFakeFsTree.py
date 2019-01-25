@@ -1,3 +1,4 @@
+import sys
 import os
 from fnmatch import fnmatch
 from fstree import FsTree, TYPE_FILE, TYPE_DIR
@@ -15,6 +16,7 @@ class FsxFakeFsTree(FsTree):
         monkeypatch.setattr(fsx,      'listdir', self._fake_listdir)
         monkeypatch.setattr(fsx.glob, 'iglob',   self._fake_iglob)
         monkeypatch.setattr(fsx.glob, 'glob',    self._fake_glob)
+        monkeypatch.setattr(fsx,      'makedirs',self._fake_makedirs)
         monkeypatch.setattr(fsx,      'open',    self._fake_open)
 
     def _fake_exists(self, path):
@@ -63,6 +65,14 @@ class FsxFakeFsTree(FsTree):
         pat_parts = pattern.split('/')
         res = _getMatchingNodePaths(self, pat_parts, 0)
         return res
+
+    def _fake_makedirs(self, name):
+        if self._fake_exists(name):
+            if sys.platform == 'win32':
+                raise WindowsError("Cannot create a file when that file already exists: '{}'".format(name))
+            else:
+                raise IOError("Cannot create a file when that file already exists: '{}'".format(name))
+        self.add_dir(name)
 
     def _fake_open(self, path, mode='r', encoding=None):
         if self._flip_backslashes:
