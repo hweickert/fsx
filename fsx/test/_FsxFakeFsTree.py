@@ -1,7 +1,7 @@
 import sys
 import os
 from fnmatch import fnmatch
-from fstree import FsTree, TYPE_FILE, TYPE_DIR
+from fstree import FsTree, TYPE_FILE, TYPE_DIR, node_matches_type
 import fsx
 import fsx.glob
 
@@ -19,6 +19,7 @@ class FsxFakeFsTree(FsTree):
         monkeypatch.setattr(fsx.glob, 'glob',    self._fake_glob)
         monkeypatch.setattr(fsx,      'makedirs',self._fake_makedirs)
         monkeypatch.setattr(fsx,      'open',    self._fake_open)
+        monkeypatch.setattr(fsx,      'walk',    self._fake_walk)
 
     def _fake_exists(self, path):
         if self._flip_backslashes:
@@ -51,6 +52,24 @@ class FsxFakeFsTree(FsTree):
         dirnode = self._find_or_raise(path, TYPE_DIR)
         res = [child.name for child in dirnode.children]
         return res
+
+    def _fake_walk(self, top):
+        # Not yet supported parameters: topdown=True, onerror=None, followlinks=False
+
+        if self._flip_backslashes:
+            top = top.replace('\\', '/')
+        node = self._find_or_raise(top, TYPE_DIR)
+
+        if top.count('/'):
+            prefix = top.rsplit('/', 1)[0] + '/'
+        else:
+            prefix = ''
+
+        for root, dirname, filenames in node.walk():
+            if root is None:
+                root = top
+            root = prefix + root
+            yield root, dirname, filenames
 
     def _fake_glob(self, pattern):
         if self._flip_backslashes:

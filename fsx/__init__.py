@@ -25,3 +25,13 @@ def makedirs(path):
 def open(filename, mode='r', encoding=None):
     res = codecs.open(filename, mode, encoding=encoding)
     return res
+
+def walk(top):
+    # TODO: Not yet supported parameters: topdown=True, onerror=None, followlinks=False
+    try:
+        import scandir
+        walker = scandir
+    except:
+        walker = os
+    res = walker.walk(top)
+    return res

@@ -157,6 +157,39 @@ def test_open_append_as_ctxmgr_works(fsx_fake):
 
     assert res == '123'
 
+@pytest.mark.parametrize(
+    'fsdict,                                   top_path, exp_roots,                exp_dir_lists,        exp_file_lists', [
+    ({'C:': {}},                               'C:',     ['C:'],                      [[]                ], [[]                ]),
+    ({'C:': {'d1': {}}},                       'C:',     ['C:', 'C:/d1'],             [['d1'], []        ], [[], []            ]),
+    ({'C:': {'d1': {'d2': {}}}},               'C:',     ['C:', 'C:/d1', 'C:/d1/d2'], [['d1'], ['d2'], []], [[], [], []        ]),
+    ({'C:': {'d1': {}, 'f1': None}},           'C:',     ['C:', 'C:/d1'],             [['d1'], []        ], [['f1'], []        ]),
+    ({'C:': {'d1': {'f2': None}, 'f1': None}}, 'C:',     ['C:', 'C:/d1'],             [['d1'], [], []    ], [['f1'], ['f2'], []]),
+])
+def test_walk_finds_roots_dirs_and_files(fsdict, top_path, exp_roots, exp_dir_lists, exp_file_lists, fsx_fake):
+    fsx_fake.add_dict(fsdict)
+    gen_walk = fsx.walk(top_path)
+    for exp_root, exp_dir_list, exp_file_list in zip(exp_roots, exp_dir_lists, exp_file_lists):
+        (root, dirs, files) = next(gen_walk)
+        assert root == exp_root
+        assert dirs == exp_dir_list
+        assert files == exp_file_list
+
+@pytest.mark.parametrize(
+    'fsdict,                                             top_path,   exp_roots,                exp_dir_lists,   exp_file_lists', [
+    ({'C:': {'d1': {'f2': None}, 'f1': None}},           'C:/d1',    ['C:/d1'],                [[]],            [['f2']]),
+    ({'C:': {'d1': {'d2': {}}, 'f1': None}},             'C:/d1',    ['C:/d1',    'C:/d1/d2'], [['d2'], []],    [[], []]),
+    ({'C:': {'d1': {'d2': {}, 'f2': None}, 'f1': None}}, 'C:/d1',    ['C:/d1',    'C:/d1/d2'], [['d2'], []],    [['f2'], []]),
+    ({'C:': {'d1': {'d2': {}, 'f2': None}, 'f1': None}}, 'C:/d1/d2', ['C:/d1/d2'],             [[]],            [[]]),
+])
+def test_walk_on_path_below_first_node_works(fsdict, top_path, exp_roots, exp_dir_lists, exp_file_lists, fsx_fake):
+    fsx_fake.add_dict(fsdict)
+    gen_walk = fsx.walk(top_path)
+    for exp_root, exp_dir_list, exp_file_list in zip(exp_roots, exp_dir_lists, exp_file_lists):
+        (root, dirs, files) = next(gen_walk)
+        assert root == exp_root
+        assert dirs == exp_dir_list
+        assert files == exp_file_list
+
 # --- Windows Compatibility ---
 @pytest.mark.parametrize('dirpath, exp', [
     ('C:\\', {'C:': {}})
