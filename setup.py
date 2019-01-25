@@ -13,5 +13,5 @@ setuptools.setup(
     url = 'https://github.com/hweickert/fsx',
     keywords = [],
     entry_points={},
-    install_requires=['fstree']
+    install_requires=['fstree==1.0.1']
 )

@@ -105,13 +105,6 @@ class FsxFakeFsTree(FsTree):
             msg = "Mode string must begin with one of 'r', 'w' or 'a', not '{}'.".format(mode)
             raise ValueError(msg)
 
-    def _find_or_raise(self, path, type_):
-        nodes = self.find(path, type_)
-        if not nodes:
-            raise IOError("The system cannot find the path specified: '{}/*.*'".format(path))
-        res = nodes[0]
-        return res
-
 def _getMatchingNodePaths(node, pat_parts, level):
     res = []
     islast = level == len(pat_parts) - 1
