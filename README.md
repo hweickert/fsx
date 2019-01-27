@@ -38,17 +38,20 @@ All calls to `fsx` will then work with the virtual instead of the real files.
 
 # Currently Supported Functions
 
-| Function         | Note                              |
-|:-----------------|:----------------------------------|
-| `os.path.isfile` |                                   |
-| `os.path.isdir`  |                                   |
-| `os.path.exists` |                                   |
-| `os.listdir`     |                                   |
-| `os.makedirs`    | Not all parameters supported yet. |
-| `os.walk`        | Not all parameters supported yet. |
-| `glob.glob`      |                                   |
-| `glob.iglob`     |                                   |
-| `open`           | Not all parameters supported yet. ||
+| Function                      | Note                              |
+|:------------------------------|:----------------------------------|
+| `os.path.isfile`              |                                   |
+| `os.path.isdir`               |                                   |
+| `os.path.exists`              |                                   |
+| `os.listdir`                  |                                   |
+| `os.makedirs`                 | Not all parameters supported yet. |
+| `os.walk`                     | Not all parameters supported yet. |
+| `open`                        | Not all parameters supported yet. |
+| `glob.glob`                   |                                   |
+| `glob.iglob`                  |                                   |
+| `tempfile.NamedTemporaryFile` |                                   |
+| `zipfile.ZipFile`             |                                   ||
+
 
 # Philosophy
 I think mocking built-in file system modules like `os` or `glob` directly is not a good idea.

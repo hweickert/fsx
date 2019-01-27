@@ -22,6 +22,9 @@ def makedirs(path):
     res = os.makedirs(path)
     return res
 
+def rmdir(path):
+    os.rmdir(path)
+
 def open(filename, mode='r', encoding=None):
     res = codecs.open(filename, mode, encoding=encoding)
     return res
