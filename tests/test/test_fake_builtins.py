@@ -34,6 +34,17 @@ def test_open_write_can_be_read_again(fsx_fake):
     res = fsx.open('f', 'r').read()
     assert res == text
 
+def test_open_write_raises_error_if_parent_directory_doesnt_exist(fsx_fake, monkeypatch):
+    monkeypatch.setattr('sys.platform', 'win32')
+    with pytest.raises(WindowsError):
+        fsx.open('d/f', 'w').write('test')
+
+def test_open_append_raises_error_if_parent_directory_doesnt_exist(fsx_fake, monkeypatch):
+    monkeypatch.setattr('sys.platform', 'win32')
+    with pytest.raises(WindowsError):
+        fsx.open('d/f', 'a').write('test')
+
+
 def test_open_append_works(fsx_fake):
     fsx_fake.add_file('f', '1')
     fsx.open('f', 'a').write('23')

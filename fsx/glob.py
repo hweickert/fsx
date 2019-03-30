@@ -1,9 +1,10 @@
 """Filename globbing utility."""
 
 import sys
-import os
 import re
 import fnmatch
+import importlib
+os = importlib.import_module('os')
 
 try:
     _unicode = unicode

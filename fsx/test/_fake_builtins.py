@@ -14,25 +14,32 @@ class Mixin(object):
             res.seek(0)
             return res
         elif mode.startswith('a'):
-            filenodes = self.find(path, TYPE_FILE)
-            if not filenodes:
-                # the file doesn't exist yet but the parent directory should.
-                dirpath = os.path.dirname(path)
-                self._find_or_raise(dirpath, TYPE_DIR)
-                filenode = self.add_file(path)
-            else:
-                filenode = filenodes[0]
+            filenode = self._find_or_create_writable_filenode(path)
             res = filenode.get_exist_io()
             # Jump to end of stream so one can append to it.
             res.seek(0, 2)
             return res
         elif mode.startswith('w'):
-            nodes = self.find(path, TYPE_FILE)
-            filenode = nodes[0] if nodes else self.add_file(path)
+            filenode = self._find_or_create_writable_filenode(path)
             res = filenode.create_new_io()
             return res
         else:
             msg = "Mode string must begin with one of 'r', 'w' or 'a', not '{}'.".format(mode)
             raise ValueError(msg)
 
+    def _find_or_create_writable_filenode(self, path):
+        filenodes = self.find(path, TYPE_FILE)
+        if not filenodes:
+            # the file doesn't exist yet but the parent directory should.
+            dirpath = os.path.dirname(path)
+            if dirpath == '':
+                # there is no parent directory, just create the file
+                filenode = self.add_file(path)
+            else:
+                # the parent directory should exist
+                self._find_or_raise(dirpath, TYPE_DIR)
+                filenode = self.add_file(path)
+        else:
+            filenode = filenodes[0]
+        return filenode
 
