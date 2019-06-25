@@ -46,6 +46,7 @@ class FsxFakeFsTree(FsTree,
         monkeypatch.setattr(fsx.os.path,  'isdir',              self._fake_os_path_isdir)
         monkeypatch.setattr(fsx.os,       'chdir',              self._fake_os_chdir)
         monkeypatch.setattr(fsx.os,       'getcwd',             self._fake_os_getcwd)
+        monkeypatch.setattr(fsx.os,       'remove',             self._fake_os_remove)
 
         # Legacy root-namespace functions, do not add new ones.
         monkeypatch.setattr(fsx,          'listdir',            self._fake_os_listdir)

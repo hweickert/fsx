@@ -8,6 +8,7 @@ listdir = os.listdir
 makedirs = os.makedirs
 rmdir = os.rmdir
 getcwd = os.getcwd
+remove = os.remove
 
 def walk(top):
     # TODO: Not yet supported parameters: topdown=True, onerror=None, followlinks=False

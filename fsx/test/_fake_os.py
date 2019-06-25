@@ -127,3 +127,7 @@ class Mixin(object):
                 raise OSError(66, "Directory not empty: '{}'".format(path))
         dirnode.remove()
 
+    def _fake_os_remove(self, path):
+        filenode = self._find_or_raise(path, TYPE_FILE)
+        filenode.remove()
+

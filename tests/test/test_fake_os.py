@@ -253,3 +253,43 @@ def test_rmdir_raises_if_subfile_exists(fsx_fake):
     with pytest.raises((WindowsError, IOError)):
         fsx.os.rmdir('temp')
 
+# --- remove ---
+def test_remove_removes_file(fsx_fake, monkeypatch):
+    file_path = '/tmp/file'
+    fsx_fake.add_file(file_path)
+
+    assert fsx.os.path.exists(file_path) is True
+    fsx.os.remove(file_path)
+    assert fsx.os.path.exists(file_path) is False
+    assert fsx.os.path.isfile(file_path) is False
+
+def test_remove_raises_error_if_file_doesnt_exist(fsx_fake, monkeypatch):
+    file_path = '/tmp/file'
+
+    monkeypatch.setattr('sys.platform', 'win32')
+    with pytest.raises(WindowsError):
+        fsx.os.remove(file_path)
+
+    monkeypatch.setattr('sys.platform', 'linux2')
+    with pytest.raises(OSError):
+        fsx.os.remove(file_path)
+
+    monkeypatch.setattr('sys.platform', 'darwin')
+    with pytest.raises(OSError):
+        fsx.os.remove(file_path)
+
+def test_remove_raises_error_if_file_is_directory(fsx_fake, monkeypatch):
+    fsx_fake.add_dir('/tmp/file')
+
+    path = '/tmp/file'
+    monkeypatch.setattr('sys.platform', 'win32')
+    with pytest.raises(WindowsError) as exc:
+        fsx.os.remove(path)
+
+    monkeypatch.setattr('sys.platform', 'linux2')
+    with pytest.raises(OSError):
+        fsx.os.remove(path)
+
+    monkeypatch.setattr('sys.platform', 'darwin')
+    with pytest.raises(OSError):
+        fsx.os.remove(path)

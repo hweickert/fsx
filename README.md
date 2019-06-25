@@ -44,6 +44,7 @@ All calls to `fsx` will then work with the virtual instead of the real files.
 | `os.path.isdir`               |                                   |
 | `os.path.exists`              |                                   |
 | `os.listdir`                  |                                   |
+| `os.remove`                   |                                   |
 | `os.makedirs`                 | Not all parameters supported yet. |
 | `os.walk`                     | Not all parameters supported yet. |
 | `open`                        | Not all parameters supported yet. |
