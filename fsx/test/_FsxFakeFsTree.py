@@ -1,3 +1,4 @@
+import sys
 from fstree import FsTree
 import fsx
 import fsx.zipfile
@@ -10,20 +11,30 @@ from . import _fake_builtins
 from . import _fake_glob
 from . import _fake_tempfile
 from . import _fake_zipfile
-from . import _fake_scandir
 from . import _fake_ftplib
 from . _helpers import env_error_to_os_specific
 
 
-class FsxFakeFsTree(FsTree,
-                    _fake_builtins.Mixin,
-                    _fake_os.Mixin,
-                    _fake_glob.Mixin,
-                    _fake_tempfile.Mixin,
-                    _fake_zipfile.Mixin,
-                    _fake_scandir.Mixin,
-                    _fake_ftplib.Mixin,
-    ):
+class FsxFakeFsTree(
+    FsTree,
+    _fake_builtins.Mixin,
+    _fake_os.Mixin,
+    _fake_glob.Mixin,
+    _fake_tempfile.Mixin,
+    _fake_zipfile.Mixin,
+    _fake_ftplib.Mixin,
+):
+    pass
+
+# if sys.version_info.major < 3:
+from . import _fake_scandir
+class FsxFakeFsTree(
+    FsxFakeFsTree,
+    _fake_scandir.Mixin
+):
+    pass
+
+class FsxFakeFsTree(FsxFakeFsTree):
     ''' A virtual file system tree supporting some common file system functions. '''
 
     def __init__(self, monkeypatch, flip_backslashes=None):
@@ -34,6 +45,7 @@ class FsxFakeFsTree(FsTree,
         monkeypatch.setattr(fsx.glob,     'glob',               self._fake_glob_glob)
         monkeypatch.setattr(fsx.tempfile, 'NamedTemporaryFile', self._fake_tempfile_NamedTemporaryFile)
         monkeypatch.setattr(fsx.zipfile,  'ZipFile',            self._fake_zipfile_ZipFile)
+        # if sys.version_info.major < 3:
         monkeypatch.setattr(fsx.scandir,  'scandir',            self._fake_scandir_scandir)
         monkeypatch.setattr(fsx.ftplib,   'FTP',                self._fake_ftplib_FTP)
 

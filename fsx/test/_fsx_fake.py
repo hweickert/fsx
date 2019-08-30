@@ -6,5 +6,3 @@ from . _FsxFakeFsTree import FsxFakeFsTree
 def fsx_fake(monkeypatch):
     res = FsxFakeFsTree(monkeypatch)
     yield res
-
-

@@ -6,3 +6,4 @@ sitepackages/
 *.pyc
 *pytest*
 .coverage
+.tox/*

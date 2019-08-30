@@ -19,7 +19,7 @@ from fsx.test import fsx_fake
     ('*/*/*', ['x', 'd/a', 'd/d/a'], ['d/d/a']),
 ])
 def test_glob(pat, exist_files, exp, fsx_fake):
-    map(fsx_fake.add_file, exist_files)
+    [fsx_fake.add_file(item) for item in exist_files]
     res = fsx.glob.glob(pat)
     assert exp == res
 

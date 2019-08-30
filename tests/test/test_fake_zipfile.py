@@ -4,6 +4,7 @@ import zipfile
 import io
 import pytest
 import os
+import six
 import fsx
 import fsx.os
 import fsx.zipfile
@@ -46,7 +47,7 @@ class Test_ZipFile_write(object):
 
         with fsx.zipfile.ZipFile(zipArchivePath, 'r') as file_:
             assert file_.namelist() == [expZipMemberName]
-            assert file_.read(expZipMemberName) == 'file-content'
+            assert file_.read(expZipMemberName) == six.b('file-content')
 
         for expArchivePath in expArchivePaths:
             assert fsx.os.path.exists(expArchivePath) == True
@@ -60,7 +61,7 @@ class Test_ZipFile_read(object):
 
         fsx_fake.add_file('arch.zip', content=zipcontent)
         res = fsx.zipfile.ZipFile('arch.zip', 'r').read('f.txt')
-        assert res == 'foo'
+        assert res == six.b('foo')
 
     def test_ZipFile_read_works_on_fake_files_received_an_empty_archive_as_content(self, fsx_fake):
         io_obj = io.BytesIO()
@@ -89,7 +90,7 @@ class Test_ZipFile_writestr(object):
         text = 'test'
         fsx.zipfile.ZipFile('arch.zip', 'w').writestr('f', text)
         res = fsx.zipfile.ZipFile('arch.zip', 'r').read('f')
-        assert res == text
+        assert res == six.b(text)
 
     def test_ZipFile_writestr_as_ctxmgr_works(self, fsx_fake):
         with fsx.zipfile.ZipFile('arch.zip', 'w') as file_:
@@ -98,7 +99,7 @@ class Test_ZipFile_writestr(object):
         with fsx.zipfile.ZipFile('arch.zip', 'r') as file_:
             res = file_.read('f')
 
-        assert res == '123'
+        assert res == six.b('123')
 
     def test_ZipFile_append_as_ctxmgr_works(self, fsx_fake):
         io_obj = io.BytesIO()
@@ -111,8 +112,8 @@ class Test_ZipFile_writestr(object):
             file_.writestr('f2', 'bar')
 
         with fsx.zipfile.ZipFile('arch.zip', 'r') as file_:
-            assert file_.read('f1') == 'foo'
-            assert file_.read('f2') == 'bar'
+            assert file_.read('f1') == six.b('foo')
+            assert file_.read('f2') == six.b('bar')
 
     def test_ZipFile_append_adds_new_files_inside_archive(self, fsx_fake):
         io_obj = io.BytesIO()
@@ -125,9 +126,9 @@ class Test_ZipFile_writestr(object):
             file_.writestr('f2', 'bar')
             file_.writestr('f3', 'spam')
 
-        assert fsx.zipfile.ZipFile('arch.zip', 'r').read('f1') == 'foo'
-        assert fsx.zipfile.ZipFile('arch.zip', 'r').read('f2') == 'bar'
-        assert fsx.zipfile.ZipFile('arch.zip', 'r').read('f3') == 'spam'
+        assert fsx.zipfile.ZipFile('arch.zip', 'r').read('f1') == six.b('foo')
+        assert fsx.zipfile.ZipFile('arch.zip', 'r').read('f2') == six.b('bar')
+        assert fsx.zipfile.ZipFile('arch.zip', 'r').read('f3') == six.b('spam')
 
 
 class Test_ZipFile_append_mode:

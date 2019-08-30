@@ -95,8 +95,8 @@ TYPE_TESTS = [
 
 @pytest.mark.parametrize('path, files, dirs, type_', TYPE_TESTS)
 def test_exists(path, files, dirs, type_, fsx_fake):
-    map(fsx_fake.add_file, files)
-    map(fsx_fake.add_dir, dirs)
+    [fsx_fake.add_file(item) for item in files]
+    [fsx_fake.add_dir(item) for item in dirs]
     exp = type_ in ['f', 'd']
     assert exp == fsx.os.path.exists(path)
 
@@ -112,16 +112,16 @@ def test_exists_returns_false_on_empty_string(fstree, fsx_fake):
 
 @pytest.mark.parametrize('path, files, dirs, type_', TYPE_TESTS)
 def test_isfile(path, files, dirs, type_, fsx_fake):
-    map(fsx_fake.add_file, files)
-    map(fsx_fake.add_dir, dirs)
+    [fsx_fake.add_file(item) for item in files]
+    [fsx_fake.add_dir(item) for item in dirs]
     exp = type_ == 'f'
     assert exp == fsx.os.path.isfile(path)
     assert exp == fsx.os.path.isfile(path)
 
 @pytest.mark.parametrize('path, files, dirs, type_', TYPE_TESTS)
 def test_isdir(path, files, dirs, type_, fsx_fake):
-    map(fsx_fake.add_file, files)
-    map(fsx_fake.add_dir, dirs)
+    [fsx_fake.add_file(item) for item in files]
+    [fsx_fake.add_dir(item) for item in dirs]
     exp = type_ == 'd'
     assert exp == fsx.os.path.isdir(path)
 
@@ -132,7 +132,7 @@ def test_isdir(path, files, dirs, type_, fsx_fake):
     (['X:/f', 'X:/f2'],'X:/', ['f', 'f2']),
 ])
 def test_listdir_works(files, path, exp, fsx_fake):
-    map(fsx_fake.add_file, files)
+    [fsx_fake.add_file(item) for item in files]
     res = fsx.os.listdir(path)
     assert res == exp
 

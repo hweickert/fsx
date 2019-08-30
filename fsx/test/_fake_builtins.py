@@ -4,7 +4,9 @@ from fstree import TYPE_FILE, TYPE_DIR
 
 
 class Mixin(object):
-    def _fake_builtins_open(self, path, mode='r', encoding=None):
+    # TODO: implement `newline`
+    # TODO: `pathlib.Path` support for python3
+    def _fake_builtins_open(self, path, mode='r', encoding=None, newline=None):
         if self._flip_backslashes:
             path = path.replace('\\', '/')
 

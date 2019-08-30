@@ -3,6 +3,7 @@ import weakref
 import errno
 import io
 import importlib
+import six
 from fstree import TYPE_DIR
 from fstree._FileNode import FileNode, FileStringIO
 import fsx
@@ -40,8 +41,8 @@ def _get_new_path(dir, prefix, suffix):
     ''' Extracted from `tempfile.py` to build proper temp-paths. '''
     names = tempfile._get_candidate_names()
 
-    for seq in xrange(tempfile.TMP_MAX):
-        name = names.next()
+    for seq in six.moves.xrange(tempfile.TMP_MAX):
+        name = next(names)
         res = os.path.join(dir, prefix + name + suffix)
         if fsx.exists(res):
             continue

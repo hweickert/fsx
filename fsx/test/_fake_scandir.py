@@ -1,7 +1,15 @@
+import sys
 import os
-import scandir
-from fstree import TYPE_FILE, TYPE_ALL, TYPE_DIR, TYPE_SYMLINK, node_matches_type
 
+
+if sys.version_info.major > 2:
+    import fsx._scandir_module
+    GenericDirEntry = fsx._scandir_module.GenericDirEntry
+else:
+    import scandir
+    GenericDirEntry = scandir.GenericDirEntry
+
+from fstree import TYPE_FILE, TYPE_ALL, TYPE_DIR, TYPE_SYMLINK, node_matches_type
 
 __all__ = ['Mixin']
 
@@ -9,18 +17,18 @@ __all__ = ['Mixin']
 class Mixin(object):
     def _fake_scandir_scandir(self, path):
         parent_node = self._find_or_raise(path, TYPE_ALL)
-        for child_node in sorted(parent_node.children):
+        for child_node in parent_node.children:
             dir_entry = FakeDirEntry(child_node)
             yield dir_entry
 
 
-class FakeDirEntry(scandir.GenericDirEntry):
+class FakeDirEntry(GenericDirEntry):
     __slots__ = ('name', '_stat', '_lstat', '_scandir_path', '_path', '_node')
 
     def __init__(self, node):
         self._node = node
         dirname, basename = os.path.split(node.get_fspath())
-        scandir.GenericDirEntry.__init__(self, dirname, basename)
+        GenericDirEntry.__init__(self, dirname, basename)
 
     def stat(self, follow_symlinks=True):
         if follow_symlinks:
@@ -63,6 +71,7 @@ class Stat(object):
         elif node_matches_type(self._node, TYPE_FILE):
             return 0o100666
         elif node_matches_type(self._node, TYPE_SYMLINK):
-            return 0o40777L
+            import sys
+            return eval('0o40777L')
         else:
             raise ValueError('Unknown file type: {}'.format(self._node.get_fspath()))

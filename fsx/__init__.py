@@ -1,4 +1,5 @@
-import codecs
+#!/usr/bin/env python3
+import io
 import importlib
 
 # Exports for backwards-compatibility (please use `fsx.os` instead):
@@ -17,6 +18,6 @@ __all__ = [
     'open',
 ]
 
-def open(filename, mode='r', encoding=None):
-    res = codecs.open(filename, mode, encoding=encoding)
+def open(filename, mode='r', encoding=None, newline=None):
+    res = io.open(filename, mode, encoding=encoding, newline=newline)
     return res
