@@ -78,9 +78,9 @@ def test_storbinary_creates_file_on_server(fp, server_path, content, fsx_fake):
     ftp.login('user', 'passwd')
     ftp.prot_p()
 
-    ftp.storbinary('STOR '+fp, fsx.open('src.txt'))
+    ftp.storbinary('STOR '+fp, fsx.open('src.txt', 'rb'))
 
-    res = fsx.open(server_path, 'rb').read()
+    res = fsx.open(server_path, 'r').read()
     assert res == content
 
 @pytest.mark.parametrize('pathname', [

@@ -1,5 +1,7 @@
 import os
 from fstree import TYPE_FILE, TYPE_DIR
+from fstree import BytesFileStringIO
+from fstree import FileStringIO
 
 
 
@@ -13,6 +15,19 @@ class Mixin(object):
         if mode.startswith('r'):
             filenode = self._find_or_raise(path, TYPE_FILE)
             res = filenode.get_exist_io()
+            if mode.endswith('b'):
+                if res.__class__ == FileStringIO:
+                    value = res.getvalue()
+                    if value is not None:
+                        value = value.encode()
+                    res = BytesFileStringIO(value)
+            else:
+                if res.__class__ == BytesFileStringIO:
+                    value = res.getvalue()
+                    if value is not None:
+                        value = value.decode(encoding or 'utf-8')
+                    res = FileStringIO(value)
+
             res.seek(0)
             return res
         elif mode.startswith('a'):
@@ -23,7 +38,8 @@ class Mixin(object):
             return res
         elif mode.startswith('w'):
             filenode = self._find_or_create_writable_filenode(path)
-            res = filenode.create_new_io()
+            cls = BytesFileStringIO if mode.endswith('b') else None
+            res = filenode.create_new_io(cls)
             return res
         else:
             msg = "Mode string must begin with one of 'r', 'w' or 'a', not '{}'.".format(mode)

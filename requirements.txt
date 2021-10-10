@@ -1,2 +1,2 @@
-fstree==1.0.4
+fstree==1.0.5
 six

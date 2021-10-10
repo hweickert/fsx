@@ -69,7 +69,7 @@ class Test_ZipFile_read(object):
         zipcontent = io_obj.getvalue()
 
         fsx_fake.add_file('arch.zip', zipcontent)
-        res = fsx.open('arch.zip', 'r').read()
+        res = fsx.open('arch.zip', 'rb').read()
         assert res == zipcontent
 
     def test_ZipFile_read_raises_if_not_existing(self, fsx_fake):
