@@ -136,6 +136,9 @@ class Mixin(object):
         self.add_dir(name)
 
     def _fake_os_rmdir(self, path):
+        if self._flip_backslashes:
+            path = path.replace('\\', '/')
+
         dirnode = self._find_or_raise(path, TYPE_DIR)
         if dirnode.children:
             if sys.platform == 'win32':
@@ -145,6 +148,9 @@ class Mixin(object):
         dirnode.remove()
 
     def _fake_os_remove(self, path):
+        if self._flip_backslashes:
+            path = path.replace('\\', '/')
+
         filenode = self._find_or_raise(path, TYPE_FILE)
         filenode.remove()
 

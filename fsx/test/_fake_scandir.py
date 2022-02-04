@@ -16,6 +16,9 @@ __all__ = ['Mixin']
 
 class Mixin(object):
     def _fake_scandir_scandir(self, path):
+        if self._flip_backslashes:
+            path = path.replace('\\', '/')
+
         parent_node = self._find_or_raise(path, TYPE_ALL)
         for child_node in parent_node.children:
             dir_entry = FakeDirEntry(child_node)
