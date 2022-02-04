@@ -25,6 +25,24 @@ class Test_getcwd(object):
         fsx.os.chdir(dirpath)
         assert fsx.os.getcwd() == expCurDir
 
+class Test_os_path_getsize(object):
+    def test_returns_length_of_content_string_for_files(self, fsx_fake):
+        fsx_fake.add('X:/a/file.txt', 'test')
+        assert fsx.os.path.getsize('X:/a/file.txt') == 4
+
+    def test_returns_0_for_files_without_content(self, fsx_fake):
+        fsx_fake.add_file('X:/a/file.txt')
+        assert fsx.os.path.getsize('X:/a/file.txt') == 0
+
+    def test_raises_if_file_does_not_exist(self, fsx_fake):
+        with pytest.raises(EnvironmentError):
+            fsx.os.path.getsize('X:/a/file.txt')
+
+    def test_raises_if_path_is_directory(self, fsx_fake):
+        fsx_fake.add_dir('X:/a')
+        with pytest.raises(EnvironmentError):
+            fsx.os.path.getsize('X:/a')
+
 class Test_os_chdir(object):
     @pytest.mark.parametrize(
          'fstree,      dirpath', [

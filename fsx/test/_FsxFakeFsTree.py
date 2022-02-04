@@ -57,6 +57,7 @@ class FsxFakeFsTree(FsxFakeFsTree):
         monkeypatch.setattr(fsx.os,       'rmdir',              self._fake_os_rmdir)
         monkeypatch.setattr(fsx.os,       'walk',               self._fake_os_walk)
         monkeypatch.setattr(fsx.os.path,  'exists',             self._fake_os_path_exists)
+        monkeypatch.setattr(fsx.os.path,  'getsize',            self._fake_os_path_getsize)
         monkeypatch.setattr(fsx.os.path,  'isfile',             self._fake_os_path_isfile)
         monkeypatch.setattr(fsx.os.path,  'isdir',              self._fake_os_path_isdir)
         monkeypatch.setattr(fsx.os,       'chdir',              self._fake_os_chdir)

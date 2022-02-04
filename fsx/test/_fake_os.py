@@ -60,6 +60,23 @@ class Mixin(object):
             res = bool(self.find(path))
             return res
 
+    def _fake_os_path_getsize(self, path):
+        if self._flip_backslashes:
+            path = path.replace('\\', '/')
+
+        abspath_from_relative = self._get_abspath_from_relative(path)
+        found_as_relative_nodes = self.find(abspath_from_relative, TYPE_FILE)
+        if found_as_relative_nodes:
+            file_node = found_as_relative_nodes[0]
+        else:
+            file_node = self._find_or_raise(path, TYPE_FILE)
+
+        file_node_content = file_node.as_dict()
+        if file_node_content is None:
+            return 0
+        else:
+            return len(file_node_content)
+
     def _fake_os_path_isfile(self, path):
         if self._flip_backslashes:
             path = path.replace('\\', '/')

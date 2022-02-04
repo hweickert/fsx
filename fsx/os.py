@@ -40,3 +40,8 @@ class path:
     def abspath(path):
         res = os.path.abspath(path)
         return res
+
+    @staticmethod
+    def getsize(path):
+        res = os.path.getsize(path)
+        return res
