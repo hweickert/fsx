@@ -6,7 +6,7 @@ description = r'''A low-level and easily mockable file system wrapper.'''
 setuptools.setup(
     name='fsx',
     packages = setuptools.find_packages(exclude=['tests*']),
-    version="1.0.7",
+    version="1.0.8",
     description=description,
     author = 'Henry Weickert',
     author_email = 'henryweickert@gmail.com',
