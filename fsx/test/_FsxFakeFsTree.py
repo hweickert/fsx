@@ -4,11 +4,13 @@ import fsx
 import fsx.zipfile
 import fsx.tempfile
 import fsx.scandir
+import fsx.shutil
 import fsx.glob
 import fsx.ftplib
 from . import _fake_os
 from . import _fake_builtins
 from . import _fake_glob
+from . import _fake_shutil
 from . import _fake_tempfile
 from . import _fake_zipfile
 from . import _fake_ftplib
@@ -20,6 +22,7 @@ class FsxFakeFsTree(
     _fake_builtins.Mixin,
     _fake_os.Mixin,
     _fake_glob.Mixin,
+    _fake_shutil.Mixin,
     _fake_tempfile.Mixin,
     _fake_zipfile.Mixin,
     _fake_ftplib.Mixin,
@@ -59,6 +62,8 @@ class FsxFakeFsTree(FsxFakeFsTree):
         monkeypatch.setattr(fsx.os,       'chdir',              self._fake_os_chdir)
         monkeypatch.setattr(fsx.os,       'getcwd',             self._fake_os_getcwd)
         monkeypatch.setattr(fsx.os,       'remove',             self._fake_os_remove)
+
+        monkeypatch.setattr(fsx.shutil,   'rmtree',            self._fake_shutil_rmtree)
 
         # Legacy root-namespace functions, do not add new ones.
         monkeypatch.setattr(fsx,          'listdir',            self._fake_os_listdir)
