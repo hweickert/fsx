@@ -1,6 +1,7 @@
 import sys
 from fstree import TYPE_FILE, TYPE_DIR
 from ._helpers import env_error_to_os_specific
+from . _Stat import Stat
 
 import importlib
 os = importlib.import_module('os')
@@ -154,3 +155,10 @@ class Mixin(object):
         filenode = self._find_or_raise(path, TYPE_FILE)
         filenode.remove()
 
+    def _fake_os_stat(self, path):
+        if self._flip_backslashes:
+            path = path.replace('\\', '/')
+
+        file_node = self._find_or_raise(path, TYPE_FILE)
+        res = Stat(file_node)
+        return res

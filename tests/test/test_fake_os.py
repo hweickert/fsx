@@ -1,3 +1,4 @@
+from datetime import datetime
 import sys
 import pytest
 import fsx
@@ -311,3 +312,16 @@ def test_remove_raises_error_if_file_is_directory(fsx_fake, monkeypatch):
     monkeypatch.setattr('sys.platform', 'darwin')
     with pytest.raises(OSError):
         fsx.os.remove(path)
+
+# --- stat ---
+def test_stat_times_are_larger_than_beginning_of_today(fsx_fake):
+    date_now = datetime.now()
+    begin_of_today = datetime(date_now.year, date_now.month, date_now.day)
+
+    file_path = '/tmp/file'
+    fsx_fake.add_file(file_path)
+
+    file_stat = fsx.os.stat(file_path)
+    assert file_stat.st_ctime >= begin_of_today.timestamp()
+    assert file_stat.st_atime >= begin_of_today.timestamp()
+    assert file_stat.st_mtime >= begin_of_today.timestamp()
