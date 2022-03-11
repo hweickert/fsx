@@ -15,6 +15,6 @@ setuptools.setup(
     entry_points={},
     install_requires=[
         'six',
-        'fstree==1.0.6',
+        'fstree==1.0.7',
     ]
 )
