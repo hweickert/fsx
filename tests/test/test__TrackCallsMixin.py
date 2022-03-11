@@ -5,6 +5,7 @@ from fsx.test import fsx_fake
 
 
 
+@pytest.mark.skipif(sys.version_info[0] == 2, reason='Tracking is currently not implemented for Python 2.7')
 def test_tracking(fsx_fake):
     fsx.os.path.exists('/tmp/file')
     with pytest.raises(RuntimeError) as raises_patch:

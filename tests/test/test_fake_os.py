@@ -1,5 +1,6 @@
 from datetime import datetime
 import sys
+import time
 import pytest
 import fsx
 import fsx.os
@@ -322,6 +323,13 @@ def test_stat_times_are_larger_than_beginning_of_today(fsx_fake):
     fsx_fake.add_file(file_path)
 
     file_stat = fsx.os.stat(file_path)
-    assert file_stat.st_ctime >= begin_of_today.timestamp()
-    assert file_stat.st_atime >= begin_of_today.timestamp()
-    assert file_stat.st_mtime >= begin_of_today.timestamp()
+    assert file_stat.st_ctime >= _get_timestamp(begin_of_today)
+    assert file_stat.st_atime >= _get_timestamp(begin_of_today)
+    assert file_stat.st_mtime >= _get_timestamp(begin_of_today)
+
+
+def _get_timestamp(datetime_object):
+    if sys.version_info[0] == 2:
+        return time.mktime(datetime_object.timetuple())
+    else:
+        return datetime_object.timestamp()

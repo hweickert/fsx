@@ -1,4 +1,5 @@
 import sys
+import time
 
 from fstree import TYPE_FILE, TYPE_DIR, TYPE_SYMLINK, node_matches_type
 
@@ -22,13 +23,13 @@ class Stat(object):
         self.st_size = property(self._not_implemented) # size of file, in bytes,
 
     @property
-    def st_ctime(self): return self._node.ctime.timestamp()
+    def st_ctime(self): return _get_timestamp(self._node.ctime)
 
     @property
-    def st_mtime(self): return self._node.mtime.timestamp()
+    def st_mtime(self): return _get_timestamp(self._node.mtime)
 
     @property
-    def st_atime(self): return self._node.atime.timestamp()
+    def st_atime(self): return _get_timestamp(self._node.atime)
 
     def _not_implemented(self):
         raise NotImplementedError
@@ -43,3 +44,9 @@ class Stat(object):
             return eval('0o40777L')
         else:
             raise ValueError('Unknown file type: {}'.format(self._node.get_fspath()))
+
+def _get_timestamp(datetime_object):
+    if sys.version_info[0] == 2:
+        return time.mktime(datetime_object.timetuple())
+    else:
+        return datetime_object.timestamp()
