@@ -72,11 +72,7 @@ class Mixin(object):
         else:
             file_node = self._find_or_raise(path, TYPE_FILE)
 
-        file_node_content = file_node.as_dict()
-        if file_node_content is None:
-            return 0
-        else:
-            return len(file_node_content)
+        return file_node.get_size()
 
     def _fake_os_path_isfile(self, path):
         if self._flip_backslashes:

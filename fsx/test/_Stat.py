@@ -20,7 +20,9 @@ class Stat(object):
         self.st_nlink = property(self._not_implemented)  # number of hard links,
         self.st_uid = property(self._not_implemented)  # user id of owner,
         self.st_gid = property(self._not_implemented)  # group id of owner,
-        self.st_size = property(self._not_implemented) # size of file, in bytes,
+
+    @property
+    def st_size(self): return self._node.get_size()
 
     @property
     def st_ctime(self): return _get_timestamp(self._node.ctime)

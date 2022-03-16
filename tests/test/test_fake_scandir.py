@@ -10,6 +10,11 @@ def test_scandir(fsx_fake):
     with pytest.raises((OSError, WindowsError)):
         next(fsx.scandir.scandir('X:/non-existing'))
 
+    fsx_fake.add_dict({'C:/some/path.txt': 'foo'})
+    entry = next(fsx.scandir.scandir('C:/some'))
+
+    size = entry.stat().st_size
+    assert size == 3
 
 @pytest.mark.parametrize(
     'fsdict,                                   top_path, exp_entries', [

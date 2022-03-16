@@ -33,6 +33,13 @@ class FileNode(Node):
             self.create_new_io(cls, *args, **kwargs)
         return self.io
 
+    def get_size(self):
+        content = self.as_dict()
+        if content is None:
+            return 0
+        else:
+            return len(content)
+
     def as_dict(self):
         if self.io is None:
             res = None
