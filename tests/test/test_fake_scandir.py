@@ -5,6 +5,12 @@ import fsx.scandir
 from fsx.test import fsx_fake
 
 
+
+def test_scandir(fsx_fake):
+    with pytest.raises((OSError, WindowsError)):
+        next(fsx.scandir.scandir('X:/non-existing'))
+
+
 @pytest.mark.parametrize(
     'fsdict,                                   top_path, exp_entries', [
     ({'C:': {}},                               'C:',     []),
@@ -26,7 +32,6 @@ def test_scandir_basic(fsdict, top_path, exp_entries, fsx_fake):
             assert we.name in exp_entries
     assert we_names == exp_entries_names
 
-
 @pytest.mark.parametrize(
     'fsdict,                                   top_path, exp_entries', [
     ({'C:': {'d1': {}}},                       'C:/d1',  []),
@@ -42,11 +47,3 @@ def test_scandir_below_top_level_works(fsdict, top_path, exp_entries, fsx_fake):
         assert entry.name == exp_entry.rstrip('/')
         assert entry.is_dir() == exp_entry.endswith('/')
         assert entry.is_file() != exp_entry.endswith('/')
-
-@pytest.mark.parametrize(
-    'fsdict,                           top_path', [
-    ({'C:': {}},                       'C:/d1'),
-])
-def test_scandir_on_non_existing_raises(fsdict, top_path, fsx_fake):
-    with pytest.raises((OSError, WindowsError)):
-        next(fsx.scandir.scandir(top_path))
