@@ -1,7 +1,7 @@
 import os
-from fstree import TYPE_FILE, TYPE_DIR
-from fstree import BytesFileStringIO
-from fstree import FileStringIO
+from fsx.fstree import TYPE_FILE, TYPE_DIR
+from fsx.fstree import BytesFileStringIO
+from fsx.fstree import FileStringIO
 
 
 

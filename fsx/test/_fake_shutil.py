@@ -1,6 +1,6 @@
 import os
 import sys
-from fstree import TYPE_DIR
+from fsx.fstree import TYPE_DIR
 
 
 class Mixin(object):

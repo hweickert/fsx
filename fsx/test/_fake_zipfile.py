@@ -2,7 +2,7 @@ import io
 import importlib
 import os
 import fsx
-from fstree import TYPE_FILE, TYPE_DIR
+from fsx.fstree import TYPE_FILE, TYPE_DIR
 
 zipfile = importlib.import_module('zipfile')
 

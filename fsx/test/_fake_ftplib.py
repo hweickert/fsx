@@ -1,7 +1,7 @@
 import os
 import ftplib
 from fnmatch import fnmatch
-from fstree import FsTree, TYPE_FILE, TYPE_DIR, node_matches_type
+from fsx.fstree import FsTree, TYPE_FILE, TYPE_DIR, node_matches_type
 import fsx
 import fsx.scandir
 

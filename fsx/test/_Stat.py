@@ -1,7 +1,7 @@
 import sys
 import time
 
-from fstree import TYPE_FILE, TYPE_DIR, TYPE_SYMLINK, node_matches_type
+from fsx.fstree import TYPE_FILE, TYPE_DIR, TYPE_SYMLINK, node_matches_type
 
 
 __all__ = [

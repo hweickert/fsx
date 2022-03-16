@@ -16,5 +16,7 @@ setuptools.setup(
     install_requires=[
         'six',
         'fstree==1.0.7',
+        'anytree==2.4.3',
+        'oyaml==0.9',
     ]
 )

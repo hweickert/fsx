@@ -11,7 +11,7 @@ else:
     import scandir
     GenericDirEntry = scandir.GenericDirEntry
 
-from fstree import TYPE_FILE, TYPE_ALL, TYPE_DIR, TYPE_SYMLINK, node_matches_type
+from fsx.fstree import TYPE_FILE, TYPE_ALL, TYPE_DIR, TYPE_SYMLINK, node_matches_type
 
 __all__ = ['Mixin']
 

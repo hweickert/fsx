@@ -1,7 +1,7 @@
 import contextlib
 import functools
 import sys
-from fstree import FsTree
+from fsx.fstree import FsTree
 import fsx
 import fsx.zipfile
 import fsx.tempfile

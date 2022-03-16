@@ -4,8 +4,8 @@ import errno
 import io
 import importlib
 import six
-from fstree import TYPE_DIR
-from fstree._FileNode import FileNode, FileStringIO
+from fsx.fstree import TYPE_DIR
+from fsx.fstree._FileNode import FileNode, FileStringIO
 import fsx
 
 tempfile = importlib.import_module('tempfile')

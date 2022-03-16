@@ -1,5 +1,5 @@
 import sys
-from fstree import TYPE_FILE, TYPE_DIR
+from fsx.fstree import TYPE_FILE, TYPE_DIR
 from ._helpers import env_error_to_os_specific
 from . _Stat import Stat
 
