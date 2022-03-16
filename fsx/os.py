@@ -1,7 +1,10 @@
 import importlib
+import sys
+
+
 os = importlib.import_module('os')
 
-__all__ = ['chdir', 'getcwd', 'remove', 'stat', 'listdir', 'makedirs', 'rmdir', 'path', 'walk']
+__all__ = ['chdir', 'getcwd', 'remove', 'stat', 'listdir', 'makedirs', 'rmdir', 'path', 'walk', 'scandir']
 
 chdir = os.chdir
 listdir = os.listdir
@@ -10,6 +13,8 @@ rmdir = os.rmdir
 getcwd = os.getcwd
 remove = os.remove
 stat = os.stat
+if sys.version_info[0] >= 3:
+    scandir = os.scandir
 
 def walk(top):
     # TODO: Not yet supported parameters: topdown=True, onerror=None, followlinks=False

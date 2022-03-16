@@ -74,6 +74,8 @@ class FsxFakeFsTree(FsxFakeFsTree):
         self._monkeypatch.setattr(fsx.os,       'getcwd',             self._fake_os_getcwd)
         self._monkeypatch.setattr(fsx.os,       'remove',             self._fake_os_remove)
         self._monkeypatch.setattr(fsx.os,       'stat',               self._fake_os_stat)
+        if sys.version_info[0] >= 3:
+            self._monkeypatch.setattr(fsx.os,   'scandir',            self._fake_scandir_scandir)
 
         self._monkeypatch.setattr(fsx.shutil,   'rmtree',            self._fake_shutil_rmtree)
 
